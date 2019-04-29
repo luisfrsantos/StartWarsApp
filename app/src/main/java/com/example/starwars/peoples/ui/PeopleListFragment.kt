@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.example.starwars.common.injection.DaggerApplicationComponet
 import com.example.starwars.common.ui.BaseFragment
 import com.example.starwars.peoples.model.Peoples
 import com.example.starwars.peoples.repository.PeoplesService
+import rx.android.schedulers.AndroidSchedulers
 import rx.functions.Action1
 import rx.schedulers.Schedulers
 import javax.inject.Inject
@@ -26,6 +28,9 @@ import com.example.starwars.common.injection.ViewModelFactory as ViewModelFactor
 class PeopleListFragment : BaseFragment() {
     @BindView(R.id.rw_list)
     lateinit var rwList: RecyclerView
+
+    @BindView(R.id.people_list_progress_bar)
+    lateinit var progressBar: ProgressBar
     @Inject
     lateinit var listAdapter : PeoplesAdapter
     @Inject
@@ -43,10 +48,12 @@ class PeopleListFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        progressBar.visibility = View.VISIBLE
         rwList.layoutManager = LinearLayoutManager(activity!!.applicationContext)
         rwList.adapter = listAdapter
         viewModel!!.getAll()
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(onError())
                 .subscribe(onSubscribe())
     }
@@ -71,6 +78,7 @@ class PeopleListFragment : BaseFragment() {
 
     private fun onSubscribe(): Action1<Peoples>? = Action1 {peoples ->
         peoples?.let {
+            progressBar.visibility = View.GONE
             peopleList.addAll(it.results!!)
             listAdapter.notifyDataSetChanged()
         }
