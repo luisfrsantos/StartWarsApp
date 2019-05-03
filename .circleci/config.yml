@@ -37,7 +37,7 @@ jobs:
            ./gradlew jacocoTestReport
             # notify Code Climate of a pending test report using `before-build`
             ./cc-test-reporter before-build
-            sudo mv ~/code/build/reports/jacoco/jacocoTestPaidDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml  ~/code/build/reports/jacoco/jacocoTestPaidDebugUnitTestReport/clover.xml
+            sudo mv ~/code/app/build/reports/jacoco/jacocoTestPaidDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml  ~/code/app/build/reports/jacoco/jacocoTestPaidDebugUnitTestReport/clover.xml
             # upload test report to Code Climate using `after-build`
             ./cc-test-reporter after-build --coverage-input-type clover --exit-code $?
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
