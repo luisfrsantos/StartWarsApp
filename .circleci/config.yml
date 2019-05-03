@@ -30,7 +30,11 @@ jobs:
       - run:
           name: Run Tests
           command: |
-           ./gradlew lint test jacocoTestFreeDebugUnitTestReport
+            ./gradlew lint test
+      - run:
+          name: Run Jacoco
+          command: |
+           ./gradlew jacocoTestReport
             # notify Code Climate of a pending test report using `before-build`
             ./cc-test-reporter before-build
             sudo build/reports/jacoco/jacocoTestPaidDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml --coverage-clover clover.xml
