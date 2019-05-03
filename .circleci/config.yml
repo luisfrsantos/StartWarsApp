@@ -6,7 +6,7 @@ jobs:
       - image: circleci/android:api-28-alpha
     environment:
       JVM_OPTS: -Xmx3200m
-      CC_TEST_REPORTER_ID: YOUR_REPO_CC_TEST_REPORTER_ID
+      CC_TEST_REPORTER_ID: 11f3851a57963c27ab8a5e33152d987a563da24136a27ee7d409b64d71fa01c8
     steps:
       - checkout
       - restore_cache:
@@ -29,13 +29,15 @@ jobs:
                      chmod +x ./cc-test-reporter
       - run:
           name: Run Tests
+          command: ./gradlew lint test
+      #Run coverage report for Code Climate
+      - run:
+          name: Setup Code Climate test-reporter
           command: |
-            ./gradlew lint test
-            # notify Code Climate of a pending test report using `before-build`
+            # download test reporter as a static binary
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
             ./cc-test-reporter before-build
-            sudo vendor/bin/phpunit --coverage-clover clover.xml
-            # upload test report to Code Climate using `after-build`
-            ./cc-test-reporter after-build --coverage-input-type clover --exit-code $?
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: app/build/reports
           destination: reports
