@@ -29,15 +29,13 @@ jobs:
                      chmod +x ./cc-test-reporter
       - run:
           name: Run Tests
-          command: ./gradlew lint test
-      #Run coverage report for Code Climate
-      - run:
-          name: Setup Code Climate test-reporter
           command: |
-            # download test reporter as a static binary
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
+           ./gradlew lint test jacocoTestFreeDebugUnitTestReport
+            # notify Code Climate of a pending test report using `before-build`
             ./cc-test-reporter before-build
+            sudo build/reports/jacoco/jacocoTestPaidDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml --coverage-clover clover.xml
+            # upload test report to Code Climate using `after-build`
+            ./cc-test-reporter after-build --coverage-input-type clover --exit-code $?
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: app/build/reports
           destination: reports
