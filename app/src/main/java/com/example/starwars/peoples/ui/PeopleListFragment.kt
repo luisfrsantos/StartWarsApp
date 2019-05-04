@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.afollestad.materialdialogs.MaterialDialog
 import com.example.starwars.R
 import com.example.starwars.common.injection.AdapterModule
 import com.example.starwars.common.injection.DaggerApplicationComponet
@@ -72,8 +73,11 @@ class PeopleListFragment : BaseFragment() {
                 .inject(this)
     }
 
-    private fun onError(): Action1<in Throwable>? = Action1 {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun onError(): Action1<in Throwable>? = Action1 {throwable ->
+        MaterialDialog(activity!!).show {
+            title(R.string.title_erro)
+            message(null, throwable.message!!)
+        }
     }
 
     private fun onSubscribe(): Action1<Peoples>? = Action1 {peoples ->
