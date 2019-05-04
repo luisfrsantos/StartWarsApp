@@ -23,7 +23,8 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Run build, tests and sonar
-          command: ./gradlew sonarqube \
+          command: |
+            ./gradlew sonarqube \
             -Dsonar.projectKey=luisfrsantos_StartWarsApp \
             -Dsonar.organization=luisfrsantos-github \
             -Dsonar.host.url=https://sonarcloud.io \
