@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StarWars</string>
+    <string name="title_erro">Que merda</string>
 </resources>

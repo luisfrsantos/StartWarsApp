@@ -10,9 +10,11 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportFragmentManager.beginTransaction()
-                              .replace(R.id.content, PeopleListFragment() ,PeopleListFragment::class.java.name )
-                              .commit()
+                .replace(R.id.content, PeopleListFragment(), PeopleListFragment.TAG)
+                .commit()
     }
 
-    override fun injectComponents() {}
+    override fun injectComponents() {
+        //ToDo inject components
+    }
 }
