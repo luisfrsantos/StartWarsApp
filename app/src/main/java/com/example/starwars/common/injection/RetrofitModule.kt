@@ -16,7 +16,7 @@ class RetrofitModule {
             getRetrofit().create(PeoplesService::class.java)
 
 
-    private fun getRetrofit() = Retrofit.Builder()
+    fun getRetrofit() = Retrofit.Builder()
             .baseUrl("https://swapi.co/api/")
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
