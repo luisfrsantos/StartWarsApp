@@ -22,22 +22,13 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Setup Code Climate test-reporter
+          name: Run build, tests and sonar
           command: |
-            # download test reporter as a static binary
-                     curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-                     chmod +x ./cc-test-reporter
-      - run:
-          name: Run Tests
-          command: ./gradlew lint test
-      #Run coverage report for Code Climate
-      - run:
-          name: Setup Code Climate test-reporter
-          command: |
-            # download test reporter as a static binary
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-            ./cc-test-reporter before-build
+            ./gradlew sonarqube \
+            -Dsonar.projectKey=luisfrsantos_StartWarsApp \
+            -Dsonar.organization=luisfrsantos-github \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=d0fed92498075c3685a3ac7ce127d4eeae3ccbd1
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: app/build/reports
           destination: reports
